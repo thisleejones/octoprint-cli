@@ -42,8 +42,10 @@ def init_config():
     global destination
     global key
     destination = config['server']['ServerAddress']
-    key = config['server']['ApiKey']
-
+    try:
+        key = os.environ['OCTOPRINT_API_KEY']
+    except KeyError:
+        key = config['server']['ApiKey']
     if not(destination.startswith('http://') or destination.startswith('https://')):  # add http if missing
         destination = "http://" + destination
     if destination.endswith('/'):  # remove trailing slash
